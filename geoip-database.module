@@ -1,0 +1,8 @@
+#!name=GeoIP database
+#!desc=Maxmind的数据库改为 https://github.com/Hackl0us/GeoIP-CN 提供的GeoIP database
+
+[MITM]
+hostname = %INSERT% download.maxmind.com
+
+[URL Rewrite]
+^https:\/\/download\.maxmind\.com\/app\/geoip_download.* https://github.com/methol/surge-geoip-database/raw/main/geo-ip-database.tar.gz
