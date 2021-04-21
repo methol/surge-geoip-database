@@ -1,0 +1,43 @@
+name: generate
+
+on:
+  push:
+    branches: [ master ]
+  
+  workflow_dispatch:
+
+  schedule: 
+    - cron:  '0 3 */3 * *'
+
+jobs:
+  build:
+    name: Generate GeoIP2 database
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Obtain from upstream
+      run: |
+        curl -LR -o GeoLite2-Country.mmdb "https://raw.githubusercontent.com/Hackl0us/GeoIP2-CN/release/Country.mmdb"
+    - name: Generate database.tar.gz
+      run: |
+        mkdir GeoLite2-Country_$(date +%Y%m%d)
+        mv GeoLite2-Country.mmdb GeoLite2-Country_$(date +%Y%m%d)
+        tar -zcvf geo-ip-database.tar.gz GeoLite2-Country_$(date +%Y%m%d)
+
+    - name: Set env variables
+      run: |
+        echo "RELEASE_NAME=$(date +%Y%m%d)" >> $GITHUB_ENV
+        echo "TAG_NAME=$(date +%Y%m%d)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Release and upload
+      uses: softprops/action-gh-release@v1
+      with:
+        name: ${{ env.RELEASE_NAME }}
+        tag_name: ${{ env.TAG_NAME }}
+        draft: false
+        prerelease: false
+        files: |
+          ./geo-ip-database.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
