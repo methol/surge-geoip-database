@@ -5,4 +5,4 @@
 hostname = %INSERT% download.maxmind.com
 
 [URL Rewrite]
-^https:\/\/download\.maxmind\.com\/app\/geoip_download.* https://raw.githubusercontent.com/methol/surge-geoip-database/main/geo-ip-database.tar.gz
+^https:\/\/download\.maxmind\.com\/app\/geoip_download.* https://github.com/methol/surge-geoip-database/releases/latest/download/geo-ip-database.tar.gz
