@@ -21,7 +21,7 @@ jobs:
     - name: Generate database.tar.gz
       run: |
         mkdir GeoLite2-Country_$(date +%Y%m%d)
-        mv GeoLite2-Country.mmdb GeoLite2-Country_$(date +%Y%m%d)
+        cp GeoLite2-Country.mmdb GeoLite2-Country_$(date +%Y%m%d)
         tar -zcvf geo-ip-database.tar.gz GeoLite2-Country_$(date +%Y%m%d)
 
     - name: Set env variables
@@ -39,5 +39,6 @@ jobs:
         prerelease: false
         files: |
           ./geo-ip-database.tar.gz
+          ./GeoLite2-Country.mmdb
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
